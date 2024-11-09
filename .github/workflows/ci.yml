@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DJANGO_SETTINGS_MODULE: netflix.sittings
+      
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
