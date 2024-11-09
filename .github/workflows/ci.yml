@@ -16,13 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DJANGO_SETTINGS_MODULE: netflix.sittings
-      
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
           python-version: 3.11
       - name: Install Requirements
-        run: pip install requirements.txt
+        run: pip install -r requirements.txt
       - name: Run Tests
         run: pytest
