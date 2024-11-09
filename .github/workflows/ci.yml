@@ -13,16 +13,31 @@ jobs:
           POSTGRES_PASSWORD: onamotam
         ports:
           - 5432:5432
+
     runs-on: ubuntu-latest
     env:
       DJANGO_SETTINGS_MODULE: netflix.sittings
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
           python-version: 3.11
+
+      # Ensure you upgrade pip to the latest version
+      - name: Upgrade pip
+        run: pip install --upgrade pip
+
+      # Install the dependencies
       - name: Install Requirements
         run: pip install -r requirements.txt
+
+      # Check if pytest is installed correctly
+      - name: Verify pytest installation
+        run: pytest --version
+
+      # Run the tests
       - name: Run Tests
         run: pytest
