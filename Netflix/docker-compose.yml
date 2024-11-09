@@ -5,9 +5,9 @@ services:
     image: postgres:15
     container_name: postgres-netflix
     environment:
-      POSTGRES_DB: netflix
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: onamotam
+      POSTGRES_PASSWORD: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
