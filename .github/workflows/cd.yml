@@ -1,0 +1,55 @@
+name: Django CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  run-tests:
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: netflix
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: onamotam
+        ports:
+          - 5432:5432
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: "Config.settings"
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v3
+      with:
+        python-version: 3.12
+    - name: Install Requirements
+      run:
+        pip install -r requirements.txt
+    - name: Check Directory Structure
+      run: |
+        
+        pwd
+        cd Netflix
+        ls -l
+        pip install setuptools
+    - name: Run Tests
+      run: python manage.py test
+      working-directory: Netflix
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: run-tests
+    steps:
+      - uses: actions/checkout@v2
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 104.248.138.89
+          username: root
+          key: ${{ secrets.KEY }}
+          script: |
+            cd netflix
+            git pull
+            pip install -r requirements.txt
+            systemctl restart gunicorn
